@@ -1,10 +1,8 @@
 ﻿using BepInEx;
-using System;
 using System.Collections;
-using System.IO;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.Networking;
-using Photon.Pun;
 
 namespace LegacyChestFace
 {
@@ -12,6 +10,7 @@ namespace LegacyChestFace
     /// This is your mod's main class.
     /// </summary>
 
+    [Description("HauntedModMenu")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Plugin : BaseUnityPlugin
     {
