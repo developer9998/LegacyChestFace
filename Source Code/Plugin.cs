@@ -33,7 +33,7 @@ namespace LegacyChestFace
 
         public void OnInitialize()
         {
-            if (originalImage == null) originalImage = Resources.Load<Texture2D>("objects/treeroom/materials/gorillachestface");
+            if (originalImage == null) originalImage = Resources.Load<Texture2D>(string.Format("objects/treeroom/materials/{0}", PluginInfo.imageName));
             if (legacyImage == null) legacyImage = GetLegacyImageFunction();
         }
 
@@ -44,6 +44,7 @@ namespace LegacyChestFace
 
             if (face)
                 return gorillaface;
+
             return gorillachest;
         }
 
@@ -51,9 +52,9 @@ namespace LegacyChestFace
         //https://stackoverflow.com/questions/1080442/
         Texture2D GetLegacyImageFunction()
         {
-            Texture2D tex = new Texture2D(128, 128, TextureFormat.RGB24, false){filterMode = FilterMode.Point};
+            Texture2D tex = new Texture2D(128, 128, (TextureFormat)3, false){filterMode = FilterMode.Point};
 
-            Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("LegacyChestFace.Resources.gorillachestface.png");
+            Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(string.Format("{0}.Resources.{1}.png", PluginInfo.Name, PluginInfo.imageName));
             byte[] bytes = new byte[manifestResourceStream.Length];
             manifestResourceStream.Read(bytes, 0, bytes.Length);
 
