@@ -1,8 +1,13 @@
 ﻿using BepInEx;
 using System.Collections;
 using System.ComponentModel;
+using System.IO;
+using System.Reflection;
+using System.Drawing;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
+using System;
 
 namespace LegacyChestFace
 {
@@ -29,7 +34,7 @@ namespace LegacyChestFace
         public void OnInitialize()
         {
             if (originalImage == null) originalImage = Resources.Load<Texture2D>("objects/treeroom/materials/gorillachestface");
-            if (legacyImage == null) StartCoroutine(GetLegacyImage());
+            if (legacyImage == null) legacyImage = GetLegacyImageFunction();
         }
 
         public Renderer GetFaceImage(VRRig rig, bool face)
@@ -43,23 +48,19 @@ namespace LegacyChestFace
         }
 
         //https://github.com/fchb1239/UnityImageDownloader
-        private IEnumerator GetLegacyImage()
+        //https://stackoverflow.com/questions/1080442/
+        Texture2D GetLegacyImageFunction()
         {
-            var imageGet = GetImageRequest();
-            yield return imageGet.SendWebRequest();
+            Texture2D tex = new Texture2D(128, 128, TextureFormat.RGB24, false){filterMode = FilterMode.Point};
 
-            Texture2D tex = new Texture2D(128, 128, TextureFormat.RGB24, false);
-            tex.filterMode = FilterMode.Point;
-            tex.LoadImage(imageGet.downloadHandler.data);
+            Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("LegacyChestFace.Resources.gorillachestface.png");
+            byte[] bytes = new byte[manifestResourceStream.Length];
+            manifestResourceStream.Read(bytes, 0, bytes.Length);
 
-            legacyImage = tex;
-        }
+            tex.LoadImage(bytes);
+            tex.Apply();
 
-        private UnityWebRequest GetImageRequest()
-        {
-            var request = new UnityWebRequest($"https://raw.githubusercontent.com/developer9998/LegacyChestFace/main/gorillachestface.png", "GET"){downloadHandler = new DownloadHandlerBuffer()};
-
-            return request;
+            return tex;
         }
     }
 }

@@ -16,8 +16,8 @@ namespace LegacyChestFace.Patches
 
     internal class VRRigFace : MonoBehaviour
     {
-        Renderer faceRenderer = null;
-        Renderer chestRenderer = null;
+        Renderer faceRenderer;
+        Renderer chestRenderer;
 
         // Images
         public Texture2D originalImage;
