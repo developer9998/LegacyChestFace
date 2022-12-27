@@ -7,6 +7,7 @@ using UnityEngine;
 namespace LegacyChestFace
 {
     [Description("HauntedModMenu")]
+    [BepInIncompatibility("org.legoandmars.gorillatag.modmenupatch")] // I don't want cheaters using my mods
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Plugin : BaseUnityPlugin
     {
@@ -17,6 +18,8 @@ namespace LegacyChestFace
         public Texture2D legacyFace;
         public Texture2D originalFur;
         public Texture2D legacyFur;
+        public Texture2D originalAltFur;
+        public Texture2D legacyAltFur;
 
         internal void Awake() => Instance = this;
 
@@ -26,18 +29,26 @@ namespace LegacyChestFace
 
         internal void OnInitialize()
         {
-            originalFace = GorillaTagger.Instance.offlineVRRig.headMesh.transform.Find("gorillaface").GetComponent<Renderer>().material.mainTexture as Texture2D;
-            originalFur = GorillaTagger.Instance.offlineVRRig.materialsToChangeTo[0].mainTexture as Texture2D;
+            originalFace = (Texture2D)GorillaTagger.Instance.offlineVRRig.headMesh.transform.Find("gorillaface").GetComponent<Renderer>().material.mainTexture;
+            originalFur = (Texture2D)GorillaTagger.Instance.offlineVRRig.materialsToChangeTo[0].mainTexture;
+            originalAltFur = (Texture2D)GorillaTagger.Instance.offlineVRRig.materialsToChangeTo[4].mainTexture;
             legacyFace = GetImage("LegacyChestFace.Resources.gorillachestface.png", 128, 128);
             legacyFur = GetImage("LegacyChestFace.Resources.lightfur.png", 64, 64);
+            legacyAltFur = GetImage("LegacyChestFace.Resources.lightfurPaintBall.png", 64, 64);
         }
 
-        // Custom image loading via. the stream
-        // https://github.com/fchb1239/UnityImageDownloader
-        // https://stackoverflow.com/questions/1080442/
-
+        /// <summary>
+        /// Custom image loading via. the stream
+        /// </summary>
+        /// <param name="path">The path of the file including the format</param>
+        /// <param name="w">The width of the image</param>
+        /// <param name="h">The height of the image</param>
+        /// <returns>The generated image with the path</returns>
         Texture2D GetImage(string path, int w, int h)
         {
+            // https://github.com/fchb1239/UnityImageDownloader
+            // https://stackoverflow.com/questions/1080442/
+
             Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false){filterMode = FilterMode.Point};
 
             Stream manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);

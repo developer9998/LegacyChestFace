@@ -7,7 +7,7 @@ namespace LegacyChestFace.Patches
     [HarmonyPatch("Awake", MethodType.Normal)]
     internal class InitializePatch
     {
-        internal static void Postfix(GorillaLocomotion.Player __instance) => __instance.StartCoroutine(Delay());
+        public static void Postfix(GorillaLocomotion.Player __instance) => __instance.StartCoroutine(Delay());
 
         // https://github.com/legoandmars/Utilla/blob/master/Utilla/HarmonyPatches/Patches/PostInitializedPatch.cs
         internal static IEnumerator Delay()

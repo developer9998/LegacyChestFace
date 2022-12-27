@@ -7,11 +7,13 @@
   <ItemGroup>
     <None Remove="Resources\gorillachestface.png" />
     <None Remove="Resources\lightfur.png" />
+    <None Remove="Resources\lightfurPaintBall.png" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\gorillachestface.png" />
     <EmbeddedResource Include="Resources\lightfur.png" />
+    <EmbeddedResource Include="Resources\lightfurPaintBall.png" />
   </ItemGroup>
 
   <ItemGroup>
